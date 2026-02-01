@@ -20,7 +20,7 @@ public class TaskController
         this.taskService = taskService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String getTasks(Model model){
         List<Task> tasks = taskService.getAllTasks();
         model.addAttribute("tasks", tasks);
