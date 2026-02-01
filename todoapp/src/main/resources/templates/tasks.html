@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo Application</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            min-height: 100vh;
+        }
+
+        .app-card {
+            max-width: 800px;
+            margin: auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .app-header {
+            background: #0d6efd;
+            color: white;
+            border-radius: 16px 16px 0 0;
+            padding: 1.5rem;
+        }
+
+        .task-card {
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .task-title {
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container py-5">
+    <div class="card app-card">
+
+        <div class="app-header text-center">
+            <h2 class="mb-1">Todo Application</h2>
+            <p class="mb-0 small">Organize your daily tasks efficiently</p>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form action="/" method="post" class="row g-3 mb-4">
+                <div class="col-md-9">
+                    <input type="text"
+                           name="title"
+                           class="form-control form-control-lg"
+                           placeholder="What do you need to do?"
+                           required>
+                </div>
+                <div class="col-md-3 d-grid">
+                    <button class="btn btn-primary btn-lg">
+                        Add Task
+                    </button>
+                </div>
+            </form>
+
+            <th:block th:each="task : ${tasks}">
+                <div class="card task-card mb-3">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <span class="task-title"
+                                  th:classappend="${task.completed} ? 'completed'"
+                                  th:text="${task.title}">
+                                Task Title
+                            </span>
+                            <br>
+                            <span class="badge status-badge"
+                                  th:classappend="${task.completed} ? 'bg-success' : 'bg-warning text-dark'"
+                                  th:text="${task.completed} ? 'Completed' : 'Pending'">
+                            </span>
+                        </div>
+
+                        <div>
+                            <a th:href="@{{id}/toggle(id=${task.id})}"
+                               class="btn btn-outline-secondary btn-sm me-2">
+                                Toggle
+                            </a>
+                            <a th:href="@{{id}/delete(id=${task.id})}"
+                               class="btn btn-outline-danger btn-sm">
+                                Delete
+                            </a>
+                              </div>
+
+                    </div>
+                </div>
+            </th:block>
+
+            <div th:if="${#lists.isEmpty(tasks)}"
+                 class="text-center text-muted mt-4">
+                <p>No tasks yet. Add your first task 🚀</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
